@@ -190,6 +190,6 @@ private:
 // Functions to define and to use
 //******************************************************************
 BankAccount ** readAccounts();
-//void sortAccounts(BankAccount **);
-//void updateAccounts(BankAccount **);
-//void displayAccounts(BankAccount **);
+void sortAccounts(BankAccount **);
+void updateAccounts(BankAccount **);
+void displayAccounts(BankAccount **);
