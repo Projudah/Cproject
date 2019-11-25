@@ -205,15 +205,50 @@ inline void Transaction::setAmount(double amountTr)
 //****************************************************************************
 void sortAccounts(BankAccount ** list)
 {
+	int size = 0;
+	while ((*list)->getAccountId() != 0){
+		size++;
+		list++;
+	}
+	//bring iterator back
+	for (int i = 0; i <size; i++){
+		list--;
+	}
+	//create array for sorting
+	BankAccount accountSort[size];
+	for (int i=0;i<size;i++){
+		accountSort[i] = **list;
+		list++;
+	}
+	//bring iterator back
+	for (int i = 0; i <size; i++){
+		list--;
+	}
+	//selection sort algorithm
+	for (int i=0;i<size-1;i++){
+		int min = i;
+		for (int j=i+1; j<size;j++){
+			if (accountSort[j].getAccountId() < accountSort[min].getAccountId()){
+				min = j;
+			}
+			else if (accountSort[j].getAccountId() == accountSort[min].getAccountId()){
+				if (accountSort[j].getType() < accountSort[min].getType()){
+					min = j;
+				}
+			}
+		}
+		//swapping
+		BankAccount tmp = accountSort[i];
+		accountSort[i] = accountSort[min];
+		accountSort[min] = tmp;
 
-
-
-
-
-
-
-
-
+	}
+	//copy into the original list
+	for (int k=0;k<size;k++){
+		BankAccount account = accountSort[k];
+		**list = account;
+		list++;
+	}
 }
 
 //******************************************************************
@@ -256,7 +291,6 @@ BankAccount ** readAccounts()
 			*pAccount = new LoanAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead);
 		else
 			*pAccount = new BankAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead);
-
 		inputFile >> accountRead >> TypeRead >> dateRead >> balanceRead >> nbyearRead >> RateRead;
 		inputFile.getline(nameRead, 60);
 		pAccount++;
