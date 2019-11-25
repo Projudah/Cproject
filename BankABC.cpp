@@ -250,7 +250,12 @@ BankAccount ** readAccounts()
 	inputFile.getline(nameRead, 60);
 
 	while (inputFile && (counter < K_SizeMax - 1)) {
-		*pAccount = new BankAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead);
+		if (TypeRead == 03)
+			*pAccount = new DepositAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead);
+		else if (TypeRead == 04)
+			*pAccount = new LoanAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead);
+		else
+			*pAccount = new BankAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead);
 
 		inputFile >> accountRead >> TypeRead >> dateRead >> balanceRead >> nbyearRead >> RateRead;
 		inputFile.getline(nameRead, 60);
