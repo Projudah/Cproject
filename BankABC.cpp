@@ -249,6 +249,10 @@ void sortAccounts(BankAccount ** list)
 		**list = account;
 		list++;
 	}
+	//bring iterator back
+	for (int i = 0; i <size; i++){
+		list--;
+	}
 }
 
 //******************************************************************
