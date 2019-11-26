@@ -4,6 +4,7 @@
 //   Alexandra Le Neve (300056146) 
 //   Syed Haider Rizvi (6842303)
 //   Judah Olotu (8448799)
+//   Nicole Sabourin (300092463)
 //   CSI2372 Section A - Fall 2019
 //
 //   Mohamed TALEB
@@ -280,12 +281,15 @@ BankAccount ** readAccounts()
 	inputFile.getline(nameRead, 60);
 
 	while (inputFile && (counter < K_SizeMax - 1)) {
-		if (TypeRead == 03)
+		if (TypeRead == 03){
 			*pAccount = new DepositAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead);
-		else if (TypeRead == 04)
+		}
+		else if (TypeRead == 04){
 			*pAccount = new LoanAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead);
-		else
+		}
+		else{
 			*pAccount = new BankAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead);
+		}
 		inputFile >> accountRead >> TypeRead >> dateRead >> balanceRead >> nbyearRead >> RateRead;
 		inputFile.getline(nameRead, 60);
 		pAccount++;
@@ -312,8 +316,7 @@ BankAccount ** readAccounts()
 //*****************************************************************************************
 Bool BankAccount::validateTransaction(const Transaction trans) const
 {
-	if (((trans.getCode() == 02) && (isDepositAccount() || isLoanAccount())) ||
-		((trans.getCode() == 03) && (isDepositAccount() || isLoanAccount() || isSavingsAccount())))
+	if (((trans.getCode() == 02) && (isDepositAccount() || isLoanAccount())) || ((trans.getCode() == 03) && (isDepositAccount() || isLoanAccount() || isSavingsAccount())))
 	{
 		return FALSE;
 	}
@@ -323,6 +326,7 @@ Bool BankAccount::validateTransaction(const Transaction trans) const
 	}
 
 }
+
 
 
 
@@ -484,7 +488,6 @@ void displayAccounts(BankAccount ** listAccounts)
 		}
 		i++;
 		pAccount = listAccounts+i;
-
 	}
 
 
