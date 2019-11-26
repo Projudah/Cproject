@@ -507,6 +507,11 @@ int main()
 	cout << "               ************************************************" << endl;
 	displayAccounts(list);
 	cout << endl;
+	cout << "NOTE ASSUMPTION: For any Loan Account interest calculation on account id: 10010" << endl;
+	cout << "we left the value as is because the function to calcualte the insterest exist only in a Deposit account" <<endl;
+	cout << "if the interest is required the value would be as such" << endl;
+	cout << "BEFORE update: " << 105000.00 + (105000.00* 8.55 * (5 / 36000.00)) << endl;
+	cout << "AFTER update: " << 105000.00 + (105000.00* 8.55 * (5 / 36000.00))  - 5000 << endl;
 
 	system("PAUSE");
 	return 0;
