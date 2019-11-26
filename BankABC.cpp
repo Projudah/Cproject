@@ -455,8 +455,7 @@ void displayAccounts(BankAccount ** listAccounts)
 		if (std::find(ids.begin(), ids.end(), (**pAccount).getAccountId()) == ids.end() ) {
 			int newid = (**pAccount).getAccountId();
 		    ids.push_back(newid);
-		    cout.setf(ios::fixed);
-			cout.precision(2);
+		    // cout.setf(ios::fixed);
 
 		    cout << "   Client Name: ";
 		    cout << (**pAccount).getClientName() << endl;
@@ -465,8 +464,11 @@ void displayAccounts(BankAccount ** listAccounts)
 
 
 		    int j = 0;
+		    float total = 0.0;
 		    while ( (**(listAccounts+j)).getType() != 0) {
 		    	if((**(listAccounts+j)).getAccountId() == newid){
+
+		    		total += (**(listAccounts+j)).getBalance();
 		    		(**(listAccounts+j)).print();
 		    		if((**(listAccounts+j)).getType() <= 2){
 		    			cout << endl;
@@ -474,6 +476,8 @@ void displayAccounts(BankAccount ** listAccounts)
 		    	}
 		    	j++;
 		    }
+		    cout.precision(2);
+		    cout << "   TOTAL ACCOUNTS: " << total << endl;
 
 		    cout << endl << endl;
 
