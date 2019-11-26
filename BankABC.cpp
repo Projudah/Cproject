@@ -210,53 +210,39 @@ inline void Transaction::setAmount(double amountTr)
 //****************************************************************************
 void sortAccounts(BankAccount ** list)
 {
+	BankAccount **ptr;
+	BankAccount **min;
+
 	int size = 0;
 	while ((*list)->getAccountId() != 0){
 		size++;
 		list++;
 	}
-	//bring iterator back
+	// //bring iterator back
 	for (int i = 0; i <size; i++){
 		list--;
 	}
-	//create array for sorting
-	BankAccount accountSort[size];
-	for (int i=0;i<size;i++){
-		accountSort[i] = **list;
-		list++;
-	}
-	//bring iterator back
-	for (int i = 0; i <size; i++){
-		list--;
-	}
-	//selection sort algorithm
+
 	for (int i=0;i<size-1;i++){
-		int min = i;
-		for (int j=i+1; j<size;j++){
-			if (accountSort[j].getAccountId() < accountSort[min].getAccountId()){
-				min = j;
+		min = list;
+		ptr = list;
+		for (int j=i;j<size;j++){
+			if ((**ptr).getAccountId() < (**min).getAccountId()){
+				min = ptr;
 			}
-			else if (accountSort[j].getAccountId() == accountSort[min].getAccountId()){
-				if (accountSort[j].getType() < accountSort[min].getType()){
-					min = j;
+			else if ((**ptr).getAccountId() == (**min).getAccountId()){
+				if ((**ptr).getType() < (**min).getType()){
+					min = ptr;
 				}
 			}
+			ptr++;
 		}
 		//swapping
-		BankAccount tmp = accountSort[i];
-		accountSort[i] = accountSort[min];
-		accountSort[min] = tmp;
+		BankAccount *tmp = *list;
+		*list = *min;
+		*min = tmp;
 
-	}
-	//copy into the original list
-	for (int k=0;k<size;k++){
-		BankAccount account = accountSort[k];
-		**list = account;
 		list++;
-	}
-	//bring iterator back
-	for (int i = 0; i <size; i++){
-		list--;
 	}
 }
 
