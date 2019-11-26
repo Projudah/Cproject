@@ -2,6 +2,7 @@
 //
 //   Project (Final)
 //   Alexandra Le Neve (300056146) 
+//   Syed Haider Rizvi (6842303)
 //   CSI2372 Section A - Fall 2019
 //
 //   Mohamed TALEB
@@ -408,17 +409,26 @@ void LoanAccount::executeTransaction(const Transaction trans)
 //*************************************************************************
 void updateAccounts(BankAccount ** listAccounts) {
 	ifstream inputFile("transact.txt");	// Opening the input file
+	if (!inputFile){
+		cout << "File not found !!!" << endl;
+		exit(0);
+	}
 
+	long accountRead, trDateRead;
+	int typeRead, trCode, counter = 0;
+	double trAmount;
 
+	inputFile >> accountRead >> typeRead >> trDateRead >> trCode >> trAmount;
+	Transaction ** ntrans = new Transaction*[K_SizeMax];
+	Transaction ** mtrans = ntrans;
 
-
-
-
-
-
-
-
-
+	while (inputFile && (counter < K_SizeMax-1)){
+		*mtrans = new Transaction(accountRead, typeRead, trDateRead, trCode, trAmount);
+		executeTransaction(*mtrans);
+		inputFile >> accountRead >> typeRead >> trDateRead >> trCode >> trAmount;
+		counter++;
+		mtrans++;
+	}
 }
 
 //******************************************************************************
