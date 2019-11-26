@@ -3,6 +3,7 @@
 //   Project (Final)
 //   Alexandra Le Neve (300056146) 
 //   Syed Haider Rizvi (6842303)
+//   Judah Olotu (8448799)
 //   CSI2372 Section A - Fall 2019
 //
 //   Mohamed TALEB
@@ -421,10 +422,20 @@ void updateAccounts(BankAccount ** listAccounts) {
 	inputFile >> accountRead >> typeRead >> trDateRead >> trCode >> trAmount;
 	Transaction ** ntrans = new Transaction*[K_SizeMax];
 	Transaction ** mtrans = ntrans;
+	BankAccount ** pAccount;
 
 	while (inputFile && (counter < K_SizeMax-1)){
 		*mtrans = new Transaction(accountRead, typeRead, trDateRead, trCode, trAmount);
-		executeTransaction(*mtrans);
+		pAccount = listAccounts;
+		while ( (**pAccount).getType() != 0) {
+			if((**pAccount).getType() == 0){
+				cout << "Account Does Not Exist" << endl;
+			}else if((**pAccount).getAccountId() == accountRead && (**pAccount).getType() == typeRead){
+				(**pAccount).executeTransaction(**mtrans);
+			}
+			pAccount++;
+
+		}
 		inputFile >> accountRead >> typeRead >> trDateRead >> trCode >> trAmount;
 		counter++;
 		mtrans++;
@@ -448,6 +459,16 @@ void displayAccounts(BankAccount ** listAccounts)
 	cout << "                       ------------------------------------------" << endl << endl;
 
 	int i = 0;
+	BankAccount ** pAccount = listAccounts;
+	while ( (**pAccount).getType() != 0) {
+		i++;
+		cout << i <<": ID:" << (**pAccount).getAccountId() << " | Type:" << (**pAccount).getType();
+		cout << " | Name:";
+		cout << (**pAccount).getClientName(); //console format was set to ISO-8859-1 to display properly
+		cout << " | Date:" << (**pAccount).getUpdatedate();
+		cout << " | Balance:" << (**pAccount).getBalance() << endl;
+		pAccount++;
+	}
 
 
 
