@@ -4,6 +4,7 @@
 //   Alexandra Le Neve (300056146) 
 //   Syed Haider Rizvi (6842303)
 //   Judah Olotu (8448799)
+//   Nicole Sabourin (300092463)
 //   CSI2372 Section A - Fall 2019
 //
 //   Mohamed TALEB
@@ -207,53 +208,39 @@ inline void Transaction::setAmount(double amountTr)
 //****************************************************************************
 void sortAccounts(BankAccount ** list)
 {
+	BankAccount **ptr;
+	BankAccount **min;
+
 	int size = 0;
 	while ((*list)->getAccountId() != 0){
 		size++;
 		list++;
 	}
-	//bring iterator back
+	// //bring iterator back
 	for (int i = 0; i <size; i++){
 		list--;
 	}
-	//create array for sorting
-	BankAccount accountSort[size];
-	for (int i=0;i<size;i++){
-		accountSort[i] = **list;
-		list++;
-	}
-	//bring iterator back
-	for (int i = 0; i <size; i++){
-		list--;
-	}
-	//selection sort algorithm
+
 	for (int i=0;i<size-1;i++){
-		int min = i;
-		for (int j=i+1; j<size;j++){
-			if (accountSort[j].getAccountId() < accountSort[min].getAccountId()){
-				min = j;
+		min = list;
+		ptr = list;
+		for (int j=i;j<size;j++){
+			if ((**ptr).getAccountId() < (**min).getAccountId()){
+				min = ptr;
 			}
-			else if (accountSort[j].getAccountId() == accountSort[min].getAccountId()){
-				if (accountSort[j].getType() < accountSort[min].getType()){
-					min = j;
+			else if ((**ptr).getAccountId() == (**min).getAccountId()){
+				if ((**ptr).getType() < (**min).getType()){
+					min = ptr;
 				}
 			}
+			ptr++;
 		}
 		//swapping
-		BankAccount tmp = accountSort[i];
-		accountSort[i] = accountSort[min];
-		accountSort[min] = tmp;
+		BankAccount *tmp = *list;
+		*list = *min;
+		*min = tmp;
 
-	}
-	//copy into the original list
-	for (int k=0;k<size;k++){
-		BankAccount account = accountSort[k];
-		**list = account;
 		list++;
-	}
-	//bring iterator back
-	for (int i = 0; i <size; i++){
-		list--;
 	}
 }
 
@@ -291,12 +278,15 @@ BankAccount ** readAccounts()
 	inputFile.getline(nameRead, 60);
 
 	while (inputFile && (counter < K_SizeMax - 1)) {
-		if (TypeRead == 03)
+		if (TypeRead == 03){
 			*pAccount = new DepositAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead);
-		else if (TypeRead == 04)
+		}
+		else if (TypeRead == 04){
 			*pAccount = new LoanAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead);
-		else
+		}
+		else{
 			*pAccount = new BankAccount(accountRead, TypeRead, nameRead, dateRead, balanceRead);
+		}
 		inputFile >> accountRead >> TypeRead >> dateRead >> balanceRead >> nbyearRead >> RateRead;
 		inputFile.getline(nameRead, 60);
 		pAccount++;
@@ -323,8 +313,7 @@ BankAccount ** readAccounts()
 //*****************************************************************************************
 Bool BankAccount::validateTransaction(const Transaction trans) const
 {
-	if (((trans.getCode() == 02) && (isDepositAccount() || isLoanAccount())) ||
-		((trans.getCode() == 03) && (isDepositAccount() || isLoanAccount() || isSavingsAccount())))
+	if (((trans.getCode() == 02) && (isDepositAccount() || isLoanAccount())) || ((trans.getCode() == 03) && (isDepositAccount() || isLoanAccount() || isSavingsAccount())))
 	{
 		return FALSE;
 	}
@@ -334,6 +323,7 @@ Bool BankAccount::validateTransaction(const Transaction trans) const
 	}
 
 }
+
 
 
 
@@ -463,6 +453,7 @@ void displayAccounts(BankAccount ** listAccounts)
 	while ( (**pAccount).getType() != 0) {
 		i++;
 		cout << i <<": ID:" << (**pAccount).getAccountId() << " | Type:" << (**pAccount).getType();
+		char * name = (**pAccount).getClientName();
 		cout << " | Name:";
 		cout << (**pAccount).getClientName(); //console format was set to ISO-8859-1 to display properly
 		cout << " | Date:" << (**pAccount).getUpdatedate();
