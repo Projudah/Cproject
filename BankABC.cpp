@@ -501,7 +501,7 @@ int main()
 {
 	std::setlocale(LC_ALL, "en-US.ISO-8859-1");
 	BankAccount ** list = readAccounts();
-	// sortAccounts(list);
+	sortAccounts(list);
 	displayAccounts(list);
 	updateAccounts(list);
 	cout << endl << endl;
