@@ -468,20 +468,20 @@ void displayAccounts(BankAccount ** listAccounts)
 
 
 		    int j = 0;
-		    float total = 0.0;
+		    double total = 0.0;
 		    while ( (**(listAccounts+j)).getType() != 0) {
 		    	if((**(listAccounts+j)).getAccountId() == newid){
-
-		    		total += (**(listAccounts+j)).getBalance();
 		    		(**(listAccounts+j)).print();
 		    		if((**(listAccounts+j)).getType() <= 2){
 		    			cout << endl;
 		    		}
+		    		total += (**(listAccounts+j)).getBalance();
+
 		    	}
 		    	j++;
 		    }
-		    cout.precision(2);
-		    cout << "   TOTAL ACCOUNTS: " << total << endl;
+		    cout << endl <<"\t\t\t\t                -----------" << endl;
+		    cout <<"\t\t\t\tTOTAL ACCOUNTS: " << total << endl;
 
 		    cout << endl << endl;
 
@@ -489,16 +489,6 @@ void displayAccounts(BankAccount ** listAccounts)
 		i++;
 		pAccount = listAccounts+i;
 	}
-
-
-
-
-
-
-
-
-
-
 }
 
 
