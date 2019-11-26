@@ -23,6 +23,9 @@
 #include <cstring>
 #include <stdlib.h>
 #include <iomanip>
+#include <locale>
+#include <vector>
+#include <algorithm>
 
 #include "BankABC.h"
 
@@ -459,15 +462,39 @@ void displayAccounts(BankAccount ** listAccounts)
 	cout << "                       ------------------------------------------" << endl << endl;
 
 	int i = 0;
+	vector<int> ids;
 	BankAccount ** pAccount = listAccounts;
 	while ( (**pAccount).getType() != 0) {
+		
+		if (std::find(ids.begin(), ids.end(), (**pAccount).getAccountId()) == ids.end() ) {
+			int newid = (**pAccount).getAccountId();
+		    ids.push_back(newid);
+		    cout.setf(ios::fixed);
+			cout.precision(2);
+
+		    cout << "   Client Name: ";
+		    cout << (**pAccount).getClientName() << endl;
+		    cout << "Bank Account"<< "\t\t" <<"Type" << "\t" <<"Update Date"<< "\t" << "Balance" << "\t\t" <<"Nb. years" << "\t" <<"Rate" << endl;
+		    cout << "------------"<< "\t\t" <<"----" << "\t" <<"-----------"<< "\t" << "-------" << "\t\t" <<"---------" << "\t" <<"----" << endl;
+
+
+		    int j = 0;
+		    while ( (**(listAccounts+j)).getType() != 0) {
+		    	if((**(listAccounts+j)).getAccountId() == newid){
+		    		(**(listAccounts+j)).print();
+		    		if((**(listAccounts+j)).getType() <= 2){
+		    			cout << endl;
+		    		}
+		    	}
+		    	j++;
+		    }
+
+		    cout << endl << endl;
+
+		}
 		i++;
-		cout << i <<": ID:" << (**pAccount).getAccountId() << " | Type:" << (**pAccount).getType();
-		cout << " | Name:";
-		cout << (**pAccount).getClientName(); //console format was set to ISO-8859-1 to display properly
-		cout << " | Date:" << (**pAccount).getUpdatedate();
-		cout << " | Balance:" << (**pAccount).getBalance() << endl;
-		pAccount++;
+		pAccount = listAccounts+i;
+
 	}
 
 
@@ -486,13 +513,14 @@ void displayAccounts(BankAccount ** listAccounts)
 
 int main()
 {
+	std::setlocale(LC_ALL, "en-US.ISO-8859-1");
 	BankAccount ** list = readAccounts();
-	sortAccounts(list);
+	// sortAccounts(list);
 	displayAccounts(list);
 	updateAccounts(list);
 	cout << endl << endl;
 	cout << "               ************************************************" << endl;
-	cout << "               * REAFFICHAGE DES DONNEES APRES LA MISE A JOUR *" << endl;
+	cout << "               *        RE-DISPLAYING DATA AFTER UPDATE       *" << endl;
 	cout << "               ************************************************" << endl;
 	displayAccounts(list);
 	cout << endl;
